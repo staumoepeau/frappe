@@ -515,6 +515,7 @@ def _enter_console(extra_args=None):
 		os.environ["PSQL_HISTORY"] = os.path.abspath(get_site_path("logs", "postgresql_console.log"))
 
 	bin, args, bin_name = get_command(
+		socket=frappe.conf.db_socket,
 		host=frappe.conf.db_host,
 		port=frappe.conf.db_port,
 		user=frappe.conf.db_name,
@@ -782,12 +783,12 @@ def run_tests(
 			click.secho(f"bench --site {site} set-config allow_tests true", fg="green")
 			return
 
-		frappe.init(site=site)
-
+		frappe.init(site)  # init frappe.flags
 		frappe.flags.skip_before_tests = skip_before_tests
 		frappe.flags.skip_test_records = skip_test_records
 
 		ret = frappe.test_runner.main(
+			site,
 			app,
 			module,
 			doctype,
