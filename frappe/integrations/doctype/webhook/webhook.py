@@ -190,10 +190,19 @@ def enqueue_webhook(doc, webhook) -> None:
 
 		except Exception as e:
 			frappe.logger().debug({"webhook_error": e, "try": i + 1})
+<<<<<<< HEAD
 			log_request(webhook.name, doc.name, request_url, headers, data, r)
 			sleep(3 * i + 1)
 			if i != 2:
 				continue
+=======
+			log_request(webhook.name, doc.doctype, doc.name, request_url, headers, data, r)
+			if i < 2:
+				sleep(3 * i + 1)
+				continue
+			if webhook.webhook_docevent == "workflow_transition":
+				raise e
+>>>>>>> a99c0ae7e2 (fix: skip post-failure sleep on last webhook retry)
 
 
 def log_request(
