@@ -573,6 +573,7 @@ class Email:
 		# charset = self.get_charset(part)
 		fcontent = part.get_payload(decode=True)
 
+<<<<<<< HEAD
 		if fcontent:
 			content_type = part.get_content_type()
 			fname = part.get_filename()
@@ -586,6 +587,23 @@ class Email:
 				fname = get_random_filename(content_type=content_type)
 			# Don't clobber existing filename
 			while fname in self.cid_map:
+=======
+		if not fcontent:
+			return
+
+		email_account = getattr(self, "email_account", None)
+		attachment_limit = cint(email_account.attachment_limit) if email_account else 0
+		if attachment_limit and len(fcontent) > attachment_limit * 1024 * 1024:
+			return  # skip attachments that are larger than the specified limit
+
+		content_type = part.get_content_type()
+		fname = part.get_filename()
+		if fname:
+			try:
+				fname = fname.replace("\n", " ").replace("\r", "")
+				fname = cstr(decode_header(fname)[0][0])
+			except Exception:
+>>>>>>> 0ea9a9b787 (fix: handle missing email_account in Email.get_attachment())
 				fname = get_random_filename(content_type=content_type)
 
 			self.attachments.append(
