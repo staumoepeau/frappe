@@ -68,10 +68,17 @@ dependencies = [
     "rq==1.15.1",
     "rsa>=4.1",
     "semantic-version~=2.10.0",
+<<<<<<< HEAD
     "sentry-sdk~=1.45.1",
     "sqlparse~=0.5.0",
     "sql_metadata~=2.11.0",
     "tenacity~=8.2.2",
+=======
+    "sentry-sdk~=2.20",
+    "sqlparse~=0.5.5",
+    "sql_metadata~=2.19.0",
+    "tenacity~=9.1.2",
+>>>>>>> 517837b99b (build: Migrate sentry-sdk to 2.x)
     "terminaltables~=3.1.10",
     "traceback-with-variables~=2.0.4",
     "typing_extensions>=4.6.1,<5",
