@@ -279,6 +279,7 @@ def get_group_by_chart_config(chart, filters) -> dict | None:
 		ignore_ifnull=True,
 	)
 
+<<<<<<< HEAD
 	if data:
 		return {
 <<<<<<< HEAD
@@ -286,6 +287,23 @@ def get_group_by_chart_config(chart, filters) -> dict | None:
 			"datasets": [{"name": chart.name, "values": [item["count"] for item in data]}],
 =======
 			"labels": [_(item.get("name", "Not Specified")) for item in data],
+=======
+	group_by_field_field = frappe.get_meta(doctype).get_field(
+		group_by_field
+	)  # get info about @group_by_field
+
+	if data and group_by_field_field.fieldtype == "Link":  # if @group_by_field is link
+		meta = frappe.get_meta(group_by_field_field.options)  # get title field
+		for item in data:  # replace chart labels from name to title value
+			if meta.title_field:
+				item.name = frappe.get_value(group_by_field_field.options, item.name, meta.title_field)
+			elif meta.translated_doctype:
+				item.name = _(item.get("name", "Not Specified"))
+
+	if data:
+		return {
+			"labels": [item.name for item in data],
+>>>>>>> 50e1079f84 (fix: Only translate if doctype is translatable)
 			"datasets": [{"name": _(chart.name), "values": [item["count"] for item in data]}],
 >>>>>>> a79776edc7 (fix: translate group-by dashboard chart labels)
 		}
