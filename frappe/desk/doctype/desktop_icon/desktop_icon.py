@@ -437,10 +437,31 @@ def sync_from_app(app):
 
 
 @frappe.whitelist()
+<<<<<<< HEAD
 def update_icons(hidden_list, user=None):
 	"""update modules"""
 	if not user:
 		frappe.only_for("System Manager")
+=======
+def add_workspace_to_desktop(workspace: str):
+	if frappe.db.exists("Workspace Sidebar", workspace):
+		sidebar = frappe.get_doc("Workspace Sidebar", workspace)
+	else:
+		sidebar = frappe.new_doc("Workspace Sidebar")
+		sidebar.title = workspace
+
+	if not any(item.link_to == workspace for item in sidebar.get("items", [])):
+		sidebar_item = frappe.new_doc("Workspace Sidebar Item")
+		sidebar_item.label = workspace
+		sidebar_item.type = "Link"
+		sidebar_item.link_to = workspace
+		sidebar_item.link_type = "Workspace"
+		sidebar.append("items", sidebar_item)
+		sidebar.save()
+
+	if frappe.db.exists("Desktop Icon", workspace):
+		return {"icon": frappe.get_doc("Desktop Icon", workspace).as_dict()}
+>>>>>>> c685ece4b7 (fix: guard add_workspace_to_desktop against duplicates)
 
 	set_hidden_list(hidden_list, user)
 	frappe.msgprint(frappe._("Updated"), indicator="green", title=_("Success"), alert=True)
