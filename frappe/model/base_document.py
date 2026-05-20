@@ -1345,3 +1345,29 @@ def _filter(data, filters, limit=None):
 				break
 
 	return out
+<<<<<<< HEAD
+=======
+
+
+CACHED_PROPERTIES = tuple(
+	prop for prop, value in vars(BaseDocument).items() if isinstance(value, cached_property)
+)
+
+UNPICKLABLE_KEYS = frozenset(
+	(
+		"_parent_doc",
+		*CACHED_PROPERTIES,
+	)
+)
+
+RESERVED_KEYWORDS = frozenset(
+	(
+		"doctype",
+		"flags",
+		"_parent_doc",
+		"_doc_before_save",
+		"dont_update_if_missing",
+		*CACHED_PROPERTIES,
+	)
+)
+>>>>>>> d567903aa2 (fix: prevent generator exhaustion of CACHED_PROPERTIES)
